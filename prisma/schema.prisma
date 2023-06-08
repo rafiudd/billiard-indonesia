@@ -21,7 +21,7 @@ model Vehicle {
   id            String      @id @default(cuid())
   category      Category
   number_plate  String
-  entry_time    DateTime
+  entry_time    DateTime    @default(now())
   exit_time     DateTime?
   fee           Int?
 }

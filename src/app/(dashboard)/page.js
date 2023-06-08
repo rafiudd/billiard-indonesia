@@ -1,6 +1,7 @@
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import Image from 'next/image'
+import Link from 'next/link'
 // import prisma from '@/lib/prisma'
 
 const statistics = [
@@ -102,7 +103,9 @@ export default async function MonitoringManagement() {
             </p>
           </div>
           <div className='flex gap-3'>
-            <Button>Tambah Data</Button>
+            <Link href="/tambah-kendaraan">
+              <Button>Tambah Data</Button>
+            </Link>
             <Input className="w-96" placeholder="Cari Berdasar ID Parkir / Plat Nomor" />
           </div>
         </div>
