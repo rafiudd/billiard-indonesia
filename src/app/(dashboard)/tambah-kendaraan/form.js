@@ -3,24 +3,44 @@
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import Select from "@/components/Select";
+import { useRouter } from "next/navigation";
 
 const categoryOptions = [
-  { name: 'Mobil', value: 'car' },
-  { name: 'Motor', value: 'motorcycle' },
-  { name: 'Truk', value: 'truck' },
-  { name: 'Bus', value: 'bus' },
+  { name: 'Mobil', value: 'CAR' },
+  { name: 'Motor', value: 'MOTORCYCLE' },
+  { name: 'Truk', value: 'TRUCK' },
+  { name: 'Bus', value: 'BUS' },
 ]
 
 export default function FormAddVehicle() {
-  const onSubmit = (event) => {
+  const router = useRouter()
+
+  const onSubmit = async (event) => {
     event.preventDefault()
 
-    const data = {
-      number_plate: event?.target?.number_plate?.value,
-      category: event?.target?.category?.value,
-    }
+    try {
+      const body = {
+        number_plate: event?.target?.number_plate?.value,
+        category: event?.target?.category?.value,
+      }
 
-    alert(`plat nomor: ${data.number_plate}, kategori kendaraan: ${data.category}`)
+      const response = await fetch('/api/vehicle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+
+      const result = await response.json()
+
+      if (result?.success) {
+        alert('Berhasil menambah data')
+        router.push('/')
+      } else {
+        alert('Gagal menambah data')
+      }
+    } catch (error) {
+      alert('Gagal menambah data')
+    }
   }
 
   return (
