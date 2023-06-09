@@ -1,8 +1,9 @@
 import Button from '@/components/Button'
-import Input from '@/components/Input'
 import Image from 'next/image'
 import Link from 'next/link'
-// import prisma from '@/lib/prisma'
+import prisma from '@/lib/prisma'
+import Search from '@/components/Search'
+import Pagination from '@/components/Pagination'
 
 const statistics = [
   {
@@ -37,26 +38,40 @@ const statistics = [
   },
 ]
 
-const tableData = [
-  {
-    id: 'PRK-8523245',
-    number_plate: 'R 24923 94',
-    entry_time: 'Kamis, 17 Januari 2023 15:15',
-    exit_time: 'Kamis, 17 Januari 2023 15:15',
-    fee: 'Rp5.000'
-  },
-  {
-    id: 'PRK-8523243',
-    number_plate: 'R 24923 94',
-    entry_time: 'Kamis, 17 Januari 2023 15:15',
-    exit_time: '',
-    fee: ''
-  },
-]
+const dateOptions = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+}
 
-export default async function MonitoringManagement() {
-  // const result = await prisma?.vehicle?.findMany() || []
-  // console.log(result)
+export default async function MonitoringManagement({ searchParams }) {
+  const { search = '', page = 1 } = searchParams
+
+  const skip = (page - 1) * 10
+
+  const result = await prisma?.vehicle?.findMany({
+    skip,
+    take: 10,
+    where: {
+      OR: [
+        {
+          number_plate: {
+            contains: search
+          },
+        }, {
+          id: {
+            contains: search
+          }
+        }
+      ]
+    },
+    orderBy: {
+      entry_time: 'desc',
+    },
+  }) || []
 
   return (
     <main className='container mx-auto'>
@@ -106,7 +121,10 @@ export default async function MonitoringManagement() {
             <Link href="/tambah-kendaraan">
               <Button>Tambah Data</Button>
             </Link>
-            <Input className="w-96" placeholder="Cari Berdasar ID Parkir / Plat Nomor" />
+            <Search
+              className="w-96"
+              placeholder="Cari Berdasar ID Parkir / Plat Nomor"
+            />
           </div>
         </div>
       </div>
@@ -136,34 +154,37 @@ export default async function MonitoringManagement() {
             </tr>
           </thead>
           <tbody>
-            {tableData.map(item => (
+            {result.map(item => (
               <tr key={item.id} className='border'>
                 <td className='px-4 py-3'>
-                  {item.id || '-'}
+                  {item?.id || '-'}
                 </td>
                 <td className='px-4 py-3'>
-                  {item.number_plate || '-'}
+                  {item?.number_plate || '-'}
                 </td>
                 <td className='px-4 py-3'>
-                  {item.entry_time || '-'}
+                  {new Date(item?.entry_time).toLocaleDateString('id', dateOptions) || '-'}
                 </td>
                 <td className='px-4 py-3'>
-                  {item.exit_time || '-'}
+                  {item?.exit_time || '-'}
                 </td>
                 <td className='px-4 py-3'>
-                  {item.fee || '-'}
+                  {item?.fee || '-'}
                 </td>
                 <td className='px-4 py-3'>
-                  {!item.fee ? (
+                  {!item?.fee ? (
                     <Button size='small' variant='secondary'>Keluar</Button>
                   ) : (
-                    <Button size='small'>Lunas</Button>
+                    <Button size='small' disabled>Lunas</Button>
                   )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        <div className='w-full flex justify-end py-4'>
+          <Pagination dataLength={result?.length} />
+        </div>
       </div>
     </main>
   )

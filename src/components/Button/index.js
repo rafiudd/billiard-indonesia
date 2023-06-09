@@ -1,8 +1,8 @@
 export default function Button ({ children, onClick, variant = 'primary', size = 'medium', ...props }) {
 
   const variantStyles = {
-    primary: 'bg-violet-700 text-white rounded hover:bg-violet-900 focus:ring-violet-300',
-    secondary: 'bg-orange-400 text-white rounded hover:bg-orange-600 focus:ring-orange-200',
+    primary: 'bg-violet-700 text-white hover:bg-violet-900 focus:ring focus:ring-violet-300',
+    secondary: 'bg-orange-400 text-white hover:bg-orange-600 focus:ring focus:ring-orange-200',
   }[variant]
 
   const sizeStyles = {
@@ -13,7 +13,7 @@ export default function Button ({ children, onClick, variant = 'primary', size =
   return (
     <button
       onClick={onClick}
-      className={`focus:ring ${variantStyles} ${sizeStyles}`}
+      className={`rounded ${variantStyles} ${sizeStyles} disabled:bg-gray-300 disabled:text-gray-50`}
       {...props}
     >
       {children}
