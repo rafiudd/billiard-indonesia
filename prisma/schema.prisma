@@ -17,6 +17,20 @@ enum Category {
   BUS
 }
 
+enum Status {
+  PARK
+  PAID
+}
+
+enum Payment {
+  GOPAY
+  DANA
+  OVO
+  QRIS
+  CARD
+  CASH
+}
+
 model Vehicle {
   id            String      @id @default(cuid())
   category      Category
@@ -24,4 +38,6 @@ model Vehicle {
   entry_time    DateTime    @default(now())
   exit_time     DateTime?
   fee           Int?
+  payment       Payment?
+  status        Status      @default(PARK)
 }

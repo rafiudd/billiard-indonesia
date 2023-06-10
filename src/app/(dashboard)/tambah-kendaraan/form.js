@@ -4,19 +4,17 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import Select from "@/components/Select";
 import { useRouter } from "next/navigation";
-
-const categoryOptions = [
-  { name: 'Mobil', value: 'CAR' },
-  { name: 'Motor', value: 'MOTORCYCLE' },
-  { name: 'Truk', value: 'TRUCK' },
-  { name: 'Bus', value: 'BUS' },
-]
+import { category as categoryOptions } from "@/constant/category";
+import { useState } from "react";
 
 export default function FormAddVehicle() {
   const router = useRouter()
 
+  const [isLoading, setLoading] = useState(false)
+
   const onSubmit = async (event) => {
     event.preventDefault()
+    setLoading(true)
 
     try {
       const body = {
@@ -40,6 +38,8 @@ export default function FormAddVehicle() {
       }
     } catch (error) {
       alert('Gagal menambah data')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -68,7 +68,7 @@ export default function FormAddVehicle() {
           />
         </div>
       </div>
-      <Button type="submit">
+      <Button type="submit" disabled={isLoading}>
         Simpan
       </Button>
     </form>

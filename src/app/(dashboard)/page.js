@@ -163,17 +163,19 @@ export default async function MonitoringManagement({ searchParams }) {
                   {item?.number_plate || '-'}
                 </td>
                 <td className='px-4 py-3'>
-                  {new Date(item?.entry_time).toLocaleDateString('id', dateOptions) || '-'}
+                  {item?.entry_time ? new Date(item?.entry_time).toLocaleDateString('id', dateOptions) : '-'}
                 </td>
                 <td className='px-4 py-3'>
-                  {item?.exit_time || '-'}
+                  {item?.exit_time ? new Date(item?.exit_time).toLocaleDateString('id', dateOptions) : '-'}
                 </td>
                 <td className='px-4 py-3'>
-                  {item?.fee || '-'}
+                  {item?.fee ? 'Rp' + item?.fee : '-'}
                 </td>
                 <td className='px-4 py-3'>
                   {!item?.fee ? (
-                    <Button size='small' variant='secondary'>Keluar</Button>
+                    <Link href={'/' + item.id}>
+                      <Button size='small' variant='secondary'>Keluar</Button>
+                    </Link>
                   ) : (
                     <Button size='small' disabled>Lunas</Button>
                   )}

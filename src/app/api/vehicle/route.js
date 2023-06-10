@@ -18,7 +18,47 @@ export async function POST(request) {
       success: true
     })
   } catch (error) {
-    console.error(error)
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return NextResponse.json({ error: error.message }, { status: error.code })
+    }
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+  }
+}
+
+export async function PUT(request) {
+  try {
+    const req = await request.json()
+    const {
+      id,
+      payment,
+      status,
+    } = req
+
+    if (status === 'PAID') {
+      return NextResponse.json({
+        success: false,
+        message: 'sudah bayar'
+      }, { status: 409 })
+    }
+
+    const data = {
+      exit_time: new Date(),
+      fee: 5000,
+      payment,
+      status: 'PAID'
+    }
+  
+    await prisma.vehicle.update({
+      where: {
+        id
+      },
+      data
+    })
+  
+    return NextResponse.json({
+      success: true
+    })
+  } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       return NextResponse.json({ error: error.message }, { status: error.code })
     }
