@@ -23,11 +23,7 @@ enum Status {
 }
 
 enum Payment {
-  GOPAY
-  DANA
-  OVO
-  QRIS
-  CARD
+  CASHLESS
   CASH
 }
 

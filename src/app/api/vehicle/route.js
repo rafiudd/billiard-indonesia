@@ -32,6 +32,8 @@ export async function PUT(request) {
       id,
       payment,
       status,
+      fee,
+      exit_time,
     } = req
 
     if (status === 'PAID') {
@@ -42,8 +44,8 @@ export async function PUT(request) {
     }
 
     const data = {
-      exit_time: new Date(),
-      fee: 5000,
+      exit_time,
+      fee,
       payment,
       status: 'PAID'
     }

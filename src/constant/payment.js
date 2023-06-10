@@ -1,9 +1,5 @@
 export const payment = [
-  { name: 'GoPay', value: 'GOPAY' },
-  { name: 'Dana', value: 'DANA' },
-  { name: 'OVO', value: 'OVO' },
-  { name: 'QRIS', value: 'QRIS' },
-  { name: 'Card', value: 'CARD' },
+  { name: 'Cashless', value: 'CASHLESS' },
   { name: 'Cash', value: 'CASH' },
 ]
 

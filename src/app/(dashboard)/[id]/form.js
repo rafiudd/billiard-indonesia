@@ -24,6 +24,26 @@ export default function FormEdit({ data }) {
 
   const category = categoryOptions.find(category => category.value === data?.category)
 
+  const exitTime = new Date()
+  const milisecondParkTime = Math.abs(exitTime - new Date(data?.entry_time))
+  const hourParkTime = Math.floor(milisecondParkTime / 1000 / 60 / 60)
+
+  let fee = 0
+
+  if (hourParkTime === 0) {
+    fee = category.feePerHour
+  } else if (hourParkTime >= 5 && hourParkTime < 10) {
+    fee = category.fixedFee
+  } else {
+    fee = hourParkTime * category.feePerHour
+  }
+
+  const formatFee = new Intl.NumberFormat('id', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+  }).format(fee)
+
   const onSubmit = async (event) => {
     event.preventDefault()
     setLoading(true)
@@ -31,6 +51,8 @@ export default function FormEdit({ data }) {
     try {
       const body = {
         ...data,
+        exit_time: exitTime,
+        fee,
         payment: event?.target?.payment?.value,
       }
 
@@ -95,7 +117,7 @@ export default function FormEdit({ data }) {
           <Input
             name="fee"
             disabled
-            value="Rp5.000"
+            value={formatFee}
           />
         </div>
         <div className="flex flex-col gap-2">
