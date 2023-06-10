@@ -5,39 +5,6 @@ import prisma from '@/lib/prisma'
 import Search from '@/components/Search'
 import Pagination from '@/components/Pagination'
 
-const statistics = [
-  {
-    name: 'car',
-    title: 'Mobil',
-    value: '196 Kendaraan',
-    icon: '/svg/car.svg'
-  },
-  {
-    name: 'motorcycle',
-    title: 'Motor',
-    value: '116 Kendaraan',
-    icon: '/svg/motorcycle.svg'
-  },
-  {
-    name: 'truck',
-    title: 'Truk',
-    value: '24 Kendaraan',
-    icon: '/svg/truck.svg'
-  },
-  {
-    name: 'bus',
-    title: 'Bus',
-    value: '5 Kendaraan',
-    icon: '/svg/bus.svg',
-  },
-  {
-    name: 'income',
-    title: 'Rp9.000.000',
-    value: 'Total Pendapatan',
-    icon: '/image/income.png',
-  },
-]
-
 const dateOptions = {
   weekday: 'long',
   year: 'numeric',
@@ -72,6 +39,75 @@ export default async function MonitoringManagement({ searchParams }) {
       entry_time: 'desc',
     },
   }) || []
+
+  const carTotal = await prisma?.vehicle?.count({
+    where: {
+      category: 'CAR'
+    }
+  }) || 0
+
+  const motorTotal = await prisma?.vehicle?.count({
+    where: {
+      category: 'MOTORCYCLE'
+    }
+  }) || 0
+
+  const truckTotal = await prisma?.vehicle?.count({
+    where: {
+      category: 'TRUCK'
+    }
+  }) || 0
+
+  const busTotal = await prisma?.vehicle?.count({
+    where: {
+      category: 'BUS'
+    }
+  }) || 0
+
+  const sumFee = await prisma?.vehicle?.aggregate({
+    _sum: {
+      fee: true
+    }
+  })
+
+  const income = new Intl.NumberFormat('id', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+  }).format(sumFee?._sum?.fee)
+
+  const statistics = [
+    {
+      name: 'car',
+      title: 'Mobil',
+      value: `${carTotal} Kendaraan`,
+      icon: '/svg/car.svg'
+    },
+    {
+      name: 'motorcycle',
+      title: 'Motor',
+      value: `${motorTotal} Kendaraan`,
+      icon: '/svg/motorcycle.svg'
+    },
+    {
+      name: 'truck',
+      title: 'Truk',
+      value: `${truckTotal} Kendaraan`,
+      icon: '/svg/truck.svg'
+    },
+    {
+      name: 'bus',
+      title: 'Bus',
+      value: `${busTotal} Kendaraan`,
+      icon: '/svg/bus.svg',
+    },
+    {
+      name: 'income',
+      title: income || 0,
+      value: 'Total Pendapatan',
+      icon: '/image/income.png',
+    },
+  ]
 
   return (
     <main className='container mx-auto'>
@@ -154,34 +190,45 @@ export default async function MonitoringManagement({ searchParams }) {
             </tr>
           </thead>
           <tbody>
-            {result.map(item => (
-              <tr key={item.id} className='border'>
-                <td className='px-4 py-3'>
-                  {item?.id || '-'}
-                </td>
-                <td className='px-4 py-3'>
-                  {item?.number_plate || '-'}
-                </td>
-                <td className='px-4 py-3'>
-                  {item?.entry_time ? new Date(item?.entry_time).toLocaleDateString('id', dateOptions) : '-'}
-                </td>
-                <td className='px-4 py-3'>
-                  {item?.exit_time ? new Date(item?.exit_time).toLocaleDateString('id', dateOptions) : '-'}
-                </td>
-                <td className='px-4 py-3'>
-                  {item?.fee ? 'Rp' + item?.fee : '-'}
-                </td>
-                <td className='px-4 py-3'>
-                  {!item?.fee ? (
-                    <Link href={'/' + item.id}>
-                      <Button size='small' variant='secondary'>Keluar</Button>
-                    </Link>
-                  ) : (
-                    <Button size='small' disabled>Lunas</Button>
-                  )}
-                </td>
-              </tr>
-            ))}
+            {result.map(item => {
+              const entryTime = item?.entry_time ? new Date(item?.entry_time).toLocaleDateString('id', dateOptions) : '-'
+              const exitTime = item?.exit_time ? new Date(item?.exit_time).toLocaleDateString('id', dateOptions) : '-'
+
+              const fee = new Intl.NumberFormat('id', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+              }).format(item?.fee)
+
+              return (
+                <tr key={item.id} className='border'>
+                  <td className='px-4 py-3'>
+                    {item?.id || '-'}
+                  </td>
+                  <td className='px-4 py-3'>
+                    {item?.number_plate || '-'}
+                  </td>
+                  <td className='px-4 py-3'>
+                    {entryTime}
+                  </td>
+                  <td className='px-4 py-3'>
+                    {exitTime}
+                  </td>
+                  <td className='px-4 py-3'>
+                    {fee}
+                  </td>
+                  <td className='px-4 py-3'>
+                    {item?.status === 'PARK' ? (
+                      <Link href={'/' + item.id}>
+                        <Button size='small' variant='secondary'>Keluar</Button>
+                      </Link>
+                    ) : (
+                      <Button size='small' disabled>Lunas</Button>
+                    )}
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
         <div className='w-full flex justify-end py-4'>
