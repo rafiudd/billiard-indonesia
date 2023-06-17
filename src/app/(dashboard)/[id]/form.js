@@ -66,7 +66,8 @@ export default function FormEdit({ data }) {
 
       if (result?.success) {
         alert('Berhasil update data')
-        router.push('/')
+        // router.push('/')
+        window.location.href = '/'
       } else {
         alert(result?.message)
       }

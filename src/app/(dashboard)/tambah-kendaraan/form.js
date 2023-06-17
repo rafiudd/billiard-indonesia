@@ -32,7 +32,8 @@ export default function FormAddVehicle() {
 
       if (result?.success) {
         alert('Berhasil menambah data')
-        router.push('/')
+        // router.push('/')
+        window.location.href = '/'
       } else {
         alert('Gagal menambah data')
       }

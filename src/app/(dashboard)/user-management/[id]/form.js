@@ -41,7 +41,8 @@ export default function FormEditUser({ data }) {
 
       if (result?.success) {
         alert('Berhasil update data')
-        router.push('/user-management')
+        // router.push('/user-management')
+        window.location.href = '/user-management'
       } else {
         alert('Gagal update data')
       }

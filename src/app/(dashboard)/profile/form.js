@@ -17,7 +17,8 @@ export default function CreateUser({ data }) {
       document.cookie = 'isLogin' + '=; Max-Age=-99999999;';
       document.cookie = 'id' + '=; Max-Age=-99999999;';
       // location.reload()
-      router.push('/login')
+      // router.push('/login')
+      window.location.href = '/login'
     } catch (error) {
       alert(error)
     } finally {

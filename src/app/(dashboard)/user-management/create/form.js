@@ -31,7 +31,8 @@ export default function CreateUser() {
       const result = await response.json()
       if (result?.success) {
         alert('Berhasil menambah data')
-        router.push('/user-management')
+        // router.push('/user-management')
+        window.location.href = '/user-management'
       } else {
         alert('Gagal menambah data')
       }
