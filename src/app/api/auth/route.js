@@ -15,7 +15,16 @@ export async function POST(request) {
 
     if(data) {
       cookies().set('isLogin', 'true');
-      cookies().set('id', data.id)
+      cookies().set('id', data.id);
+
+      await prisma.users.update({
+        where: {
+          id: data.id
+        },
+        data: {
+          last_login: new Date()
+        }
+      })
 
       return NextResponse.json({
         success: true
