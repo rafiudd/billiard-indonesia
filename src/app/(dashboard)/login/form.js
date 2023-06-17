@@ -31,7 +31,7 @@ export default function CreateUser() {
       const result = await response.json()
       if (result?.success) {
         alert('Berhasil login')
-        router.push('/user-management')
+        router.push('/')
       } else {
         alert('Gagal login')
       }

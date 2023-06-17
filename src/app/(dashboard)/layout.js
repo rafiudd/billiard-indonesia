@@ -6,11 +6,9 @@ export default function DashboardLayout({ children }) {
   const isLogin = cookieStore.get('isLogin')
   const id = cookieStore.get('id')
 
-  console.log(isLogin, id, 'cookies')
-
   return (
     <div>
-      <Navbar isLogin={isLogin.value} id={id.value} />
+      <Navbar isLogin={isLogin?.value ? isLogin.value : false} id={ id?.value } />
       <div className='py-16'>
         {children}
       </div>

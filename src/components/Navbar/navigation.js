@@ -5,13 +5,12 @@ import Link from 'next/link'
 
 export default function Navigation ({ isLogin, id }) {
   const pathname = usePathname();
-  console.log(isLogin, id, 'asdkan')
 
   let navLinks = [
     { name: 'Login', href: '/login' },
   ]
 
-  if(isLogin && id) {
+  if(isLogin) {
     navLinks = [
       { name: 'Monitoring Management', href: '/' },
       { name: 'User Management', href: '/user-management' },
