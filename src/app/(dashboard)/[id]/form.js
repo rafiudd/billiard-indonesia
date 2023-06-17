@@ -35,7 +35,7 @@ export default function FormEdit({ data }) {
   } else if (hourParkTime >= 5 && hourParkTime < 10) {
     fee = category.fixedFee
   } else {
-    fee = hourParkTime * category.feePerHour
+    fee = hourParkTime * category?.feePerHour
   }
 
   const formatFee = new Intl.NumberFormat('id', {

@@ -37,3 +37,13 @@ model Vehicle {
   payment       Payment?
   status        Status      @default(PARK)
 }
+
+model Users {
+  id            String      @id @default(cuid())
+  fullname      String
+  password      String
+  email         String
+  phone         String
+  created_at    DateTime    @default(now())
+  last_login    DateTime    @default(now())
+}
