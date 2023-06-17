@@ -1,5 +1,6 @@
 import Form from './form'
 import { cookies } from 'next/headers'
+import prisma from '@/lib/prisma'
 
 export default async function FormCreateUser() {
   const cookieStore = cookies()
