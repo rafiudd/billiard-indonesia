@@ -2,7 +2,9 @@
 
 import Input from "@/components/Input";
 import Button from "@/components/Button";
+import Select from "@/components/Select";
 import { useRouter } from "next/navigation";
+import { category as categoryOptions } from "@/constant/category";
 import { useState } from "react";
 
 export default function CreateUser() {
@@ -16,13 +18,11 @@ export default function CreateUser() {
 
     try {
       const body = {
-        fullname: event?.target?.fullname?.value,
         email: event?.target?.email?.value,
-        phone: event?.target?.phone?.value,
         password: event?.target?.password?.value
       }
 
-      const response = await fetch('/api/user', {
+      const response = await fetch('/api/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -30,13 +30,13 @@ export default function CreateUser() {
 
       const result = await response.json()
       if (result?.success) {
-        alert('Berhasil menambah data')
+        alert('Berhasil login')
         router.push('/user-management')
       } else {
-        alert('Gagal menambah data')
+        alert('Gagal login')
       }
     } catch (error) {
-      alert('Gagal menambah data')
+      alert('Gagal login')
     } finally {
       setLoading(false)
     }
@@ -46,16 +46,6 @@ export default function CreateUser() {
     <form onSubmit={onSubmit}>
       <div className="mb-6">
         <div className="flex flex-col gap-2 my-4">
-          <label htmlFor="fullname" className="text-violet-700">
-            Nama Lengkap
-          </label>
-          <Input
-            name="fullname"
-            placeholder="Nama Lengkap"
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-2 my-4">
           <label htmlFor="email" className="text-violet-700">
             Email
           </label>
@@ -63,16 +53,6 @@ export default function CreateUser() {
             type="email"
             name="email"
             placeholder="Email"
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-2 my-4">
-          <label htmlFor="phone" className="text-violet-700">
-            No HP
-          </label>
-          <Input
-            name="phone"
-            placeholder="No HP"
             required
           />
         </div>
@@ -89,7 +69,7 @@ export default function CreateUser() {
         </div>
       </div>
       <Button type="submit" disabled={isLoading}>
-        Simpan
+        Login
       </Button>
     </form>
   )

@@ -3,14 +3,21 @@
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
-const navLinks = [
-  { name: 'Monitoring Management', href: '/' },
-  { name: 'User Management', href: '/user-management' },
-  { name: 'Profile', href: '/profile' },
-]
-
-export default function Navigation () {
+export default function Navigation ({ isLogin, id }) {
   const pathname = usePathname();
+  console.log(isLogin, id, 'asdkan')
+
+  let navLinks = [
+    { name: 'Login', href: '/login' },
+  ]
+
+  if(isLogin && id) {
+    navLinks = [
+      { name: 'Monitoring Management', href: '/' },
+      { name: 'User Management', href: '/user-management' },
+      { name: 'Profile', href: '/profile' }
+    ]
+  }
 
   return (
     <div className='flex items-center justify-center'>

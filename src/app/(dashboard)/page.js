@@ -116,7 +116,7 @@ export default async function MonitoringManagement({ searchParams }) {
           Dashboard Monitoring Parkirin
         </h1>
         <h2 className='text-2xl'>
-          Statistik Kendaraan Yang Parkir Hari Ini
+          Statistik Kendaraan Parkirin
         </h2>
       </div>
 
@@ -150,7 +150,7 @@ export default async function MonitoringManagement({ searchParams }) {
               Tabel Kendaraan
             </p>
             <p className='text-2xl'>
-              Statistik Kendaraan Yang Parkir Hari Ini
+              Tabel Kendaraan Parkirin
             </p>
           </div>
           <div className='flex gap-3'>

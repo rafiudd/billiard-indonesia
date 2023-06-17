@@ -40,9 +40,6 @@ export default async function UserManagement({ searchParams }) {
     },
   }) || []
 
-  console.log(result);
-  console.log("asdasd");
-
   return (
     <main className='container mx-auto'>
       <div className='py-9'>
