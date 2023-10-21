@@ -9,7 +9,7 @@ export default function Logo () {
   return (
     <div className='px-9 py-3 bg-violet-700 w-fit'>
       <p className={`${poppins.className} text-2xl text-white`}>
-        Parkirin.
+        Billiard Indonesia.
       </p>
     </div>
   )

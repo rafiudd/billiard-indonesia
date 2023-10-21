@@ -11,29 +11,23 @@ export async function POST(request) {
       email
     } = req
 
-    const data = await prisma.users.findFirst({ where: { email, password } });
+    console.log(req)
 
+    const data = await prisma.users.findFirst({ where: { email, password } });
+    console.log(data, 'asdknasdka')
     if(data) {
       cookies().set('isLogin', 'true');
       cookies().set('id', data.id);
-
-      await prisma.users.update({
-        where: {
-          id: data.id
-        },
-        data: {
-          last_login: new Date()
-        }
-      })
 
       return NextResponse.json({
         success: true
       })
     }
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      return NextResponse.json({ error: error.message }, { status: error.code })
-    }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.log(error)
+    // if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    //   return NextResponse.json({ error: error.message }, { status: error.code })
+    // }
+    // return NextResponse.json({ error: error.message }, { status: error.code })
   }
 }
