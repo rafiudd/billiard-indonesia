@@ -1,130 +1,91 @@
-import Button from '@/components/Button'
-import Image from 'next/image'
-import Link from 'next/link'
-import prisma from '@/lib/prisma'
-import Search from '@/components/Search'
-import Pagination from '@/components/Pagination'
+import Button from "@/components/Button";
+import Image from "next/image";
+import Link from "next/link";
+import prisma from "@/lib/prisma";
+import Search from "@/components/Search";
+import Pagination from "@/components/Pagination";
+import Filter from "@/components/Filter";
 
 const dateOptions = {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  timeZone: 'Asia/Jakarta'
-}
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: "Asia/Jakarta",
+};
 
 export default async function MonitoringManagement({ searchParams }) {
-  const { search = '', page = 1 } = searchParams
+  const { search = "", page = 1, filter = "XT Billiard" } = searchParams;
 
-  const skip = (page - 1) * 10
-
-  const result = await prisma?.order_biliard?.findMany({
-    skip,
-    take: 10,
-    where: {
-      OR: [
-        {
-          customer: {
-            contains: search
-          },
-        }, {
-          cabang_id: {
-            contains: search
-          }
-        }
-      ]
-    },
-    orderBy: {
-      created_at: 'desc',
-    },
-  }) || []
-
+  const skip = (page - 1) * 10;
+  const result =
+    await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
+    from order_biliard 
+    WHERE cabang_id = ${filter} GROUP BY grouped_date
+    LIMIT 10
+    OFFSET ${skip}
+    `;
   return (
-    <main className='container mx-auto'>
-      <div className='py-9'>
-        <div className='flex justify-between items-center'>
+    <main className="container mx-auto">
+      <label
+        for="countries"
+        class="block mb-2 text-sm font-medium text-gray-900"
+      >
+        Select an option
+      </label>
+
+      <div className="py-9">
+        <div className="flex justify-between items-center">
           <div>
-            <p className='font-bold text-5xl mb-1'>
-              Order Billiard
-            </p>
-            <p className='text-2xl'>
-              Order Billiard Masuk
-            </p>
+            <p className="font-bold text-5xl mb-1">Order Billiard</p>
+            <p className="text-2xl">Order Billiard Masuk</p>
           </div>
-          <div className='flex gap-3'>
-            {/* <Link href="/tambah-kendaraan">
-              <Button>Filter Data</Button>
-            </Link> */}
+          <div className="flex gap-3">
+            <Filter/>
           </div>
         </div>
       </div>
 
       <div>
-        <table className='w-full text-left'>
-          <thead className='bg-violet-700 text-white'>
+        <table className="w-full text-left">
+          <thead className="bg-violet-700 text-white">
             <tr>
-              <th className='px-4 py-3'>
-                ID Order
-              </th>
-              <th className='px-4 py-3'>
-                Nama Customer
-              </th>
-              <th className='px-4 py-3'>
-                Cabang
-              </th>
-              <th className='px-4 py-3'>
-                Total Bayar
-              </th>
-              <th className='px-4 py-3'>
-                Kasir
-              </th>
-              <th className='px-4 py-3 text-right'>
-                Tanggal Order
-              </th>
+              <th className="px-4 py-3 text-left">Tanggal Order</th>
+              <th className="px-4 py-3 text-left">Total Penjualan</th>
+              <th className="px-4 py-3 text-left">Cabang</th>
             </tr>
           </thead>
           <tbody>
-            {result.map(item => {
-              const entryTime = item?.entry_time ? new Date(item?.entry_time).toLocaleDateString('id', dateOptions) : '-'
-              const created_at = item?.created_at ? new Date(item?.created_at).toLocaleDateString('id', dateOptions) : '-'
+            {result.map((item) => {
+              const created_at = item?.grouped_date
+                ? new Date(item?.grouped_date).toLocaleDateString(
+                    "id",
+                    dateOptions
+                  )
+                : "-";
 
-              const fee = new Intl.NumberFormat('id', {
-                style: 'currency',
-                currency: 'IDR',
+              const fee = new Intl.NumberFormat("id", {
+                style: "currency",
+                currency: "IDR",
                 minimumFractionDigits: 0,
-              }).format(item?.totalbayar)
+              }).format(item?.totalbayar);
 
               return (
-                <tr key={item.id} className='border'>
-                  <td className='px-4 py-3'>
-                    {item?.id_order_biliard.toString()}
-                  </td>
-                  <td className='px-4 py-3'>
-                    {item?.customer || '-'}
-                  </td>
-                  <td className='px-4 py-3'>
-                    {item?.cabang_id}
-                  </td>
-                  <td className='px-4 py-3'>
-                    {fee}
-                  </td>
-                  <td className='px-4 py-3'>
-                    {item?.created_by}
-                  </td>
-                  <td className='px-4 py-3 text-right'>
-                    {created_at}
-                  </td>
+                <tr key={item.id} className="border">
+                  <td className="px-4 py-3 text-left">{created_at}</td>
+                  <td className="px-4 py-3 text-left">{fee}</td>
+                  <td className="px-4 py-3 text-left">{item.cabang_id}</td>
                 </tr>
-              )
+              );
             })}
           </tbody>
         </table>
-        <div className='w-full flex justify-end py-4'>
+        <div className="w-full flex justify-end py-4">
           <Pagination dataLength={result?.length} />
         </div>
       </div>
     </main>
-  )
+  );
 }
