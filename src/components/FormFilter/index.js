@@ -19,7 +19,7 @@ export default function FormFilter() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex items-center flex-row flex-1 gap-3">
+    <form onSubmit={onSubmit} className="flex flex-col w-full md:w-unset md:items-center md:flex-row flex-1 gap-3">
       <div className="basis-2/4">
         <RangeDatePicker value={date} onChange={(value) => setDate(value)} />
       </div>

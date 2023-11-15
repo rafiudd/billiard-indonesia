@@ -28,9 +28,9 @@ export default async function MonitoringManagement({ searchParams }) {
     `;
 
   return (
-    <main className="container mx-auto">
+    <main className="container px-4 md:px-0 mx-auto">
       <div className="py-9">
-        <div className="flex items-center">
+        <div className="flex flex-col items-start gap-8 md:gap-0 md:flex-row md:items-center">
           <div className="flex-1">
             <p className="font-bold text-5xl mb-1">Order Billiard</p>
             <p className="text-2xl">Order Billiard Masuk</p>
