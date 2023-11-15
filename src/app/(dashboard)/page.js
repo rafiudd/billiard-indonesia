@@ -1,10 +1,6 @@
-import Button from "@/components/Button";
-import Image from "next/image";
-import Link from "next/link";
 import prisma from "@/lib/prisma";
-import Search from "@/components/Search";
 import Pagination from "@/components/Pagination";
-import Filter from "@/components/Filter";
+import FormFilter from "@/components/FormFilter";
 
 const dateOptions = {
   weekday: "long",
@@ -17,34 +13,29 @@ const dateOptions = {
 };
 
 export default async function MonitoringManagement({ searchParams }) {
-  const { search = "", page = 1, filter = "XT Billiard" } = searchParams;
+  const { page = 1, filter = "XT Billiard", startDate = new Date().toISOString().split('T')[0], endDate = new Date().toISOString().split('T')[0] } = searchParams;
 
   const skip = (page - 1) * 10;
   const result =
     await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
     from order_biliard 
-    WHERE cabang_id = ${filter} GROUP BY grouped_date
+    WHERE cabang_id = ${filter} 
+    AND DATE(created_at) BETWEEN ${startDate} AND ${endDate}
+    GROUP BY grouped_date
+    ORDER BY grouped_date DESC
     LIMIT 10
     OFFSET ${skip}
     `;
+
   return (
     <main className="container mx-auto">
-      <label
-        for="countries"
-        class="block mb-2 text-sm font-medium text-gray-900"
-      >
-        Select an option
-      </label>
-
       <div className="py-9">
-        <div className="flex justify-between items-center">
-          <div>
+        <div className="flex items-center">
+          <div className="flex-1">
             <p className="font-bold text-5xl mb-1">Order Billiard</p>
             <p className="text-2xl">Order Billiard Masuk</p>
           </div>
-          <div className="flex gap-3">
-            <Filter/>
-          </div>
+          <FormFilter />
         </div>
       </div>
 

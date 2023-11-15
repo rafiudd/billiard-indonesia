@@ -7,7 +7,7 @@ export default function Button ({ children, onClick, variant = 'primary', size =
 
   const sizeStyles = {
     small: 'py-1 px-3',
-    medium: 'py-3 px-5',
+    medium: 'py-2.5 px-5',
   }[size]
 
   return (
