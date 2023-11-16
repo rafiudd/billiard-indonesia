@@ -1,4 +1,5 @@
 "use client"
+import moment from "moment"
 import { useState, useCallback } from "react"
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import Filter from "@/components/Filter"
@@ -6,7 +7,7 @@ import RangeDatePicker from "@/components/RangeDatePicker"
 
 export default function FormFilter() {
   const [date, setDate] = useState({
-    startDate: new Date().toISOString().split('T')[0], 
+    startDate:moment().subtract(7, 'days').format('YYYY-MM-DD'), 
     endDate: new Date().toISOString().split('T')[0] 
   })
   const [branch, setBranch] = useState("XT Billiard")

@@ -20,7 +20,7 @@ export default function Navigation ({ isLogin, id }) {
 
   return (
     <div className='flex items-center justify-center'>
-      <div className='flex gap-9'>
+      <div className='flex gap-9 items-center'>
         {navLinks.map(link => {
           const isActive = pathname === link.href
 
