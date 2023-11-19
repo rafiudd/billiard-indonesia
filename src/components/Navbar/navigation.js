@@ -12,7 +12,7 @@ export default function Navigation ({ isLogin, id }) {
 
   if(isLogin) {
     navLinks = [
-      { name: 'Report Management', href: '/' },
+      // { name: 'Report Management', href: '/' },
       // { name: 'User Management', href: '/user-management' },
       // { name: 'Profile', href: '/profile' }
     ]

@@ -9,6 +9,7 @@ export default function RangeDatePicker({ onChange, value}) {
 
   return (
     <Datepicker 
+      primaryColor={"sky"} 
       name="rangeDatePicker"
       value={value} 
       onChange={handleValueChange} 

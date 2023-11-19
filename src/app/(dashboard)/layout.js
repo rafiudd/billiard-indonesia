@@ -13,7 +13,7 @@ export default function DashboardLayout({ children }) {
 
   return (
     <div>
-      <Navbar isLogin={isLogin?.value ? isLogin.value : false} id={ id?.value } />
+      {/* <Navbar isLogin={isLogin?.value ? isLogin.value : false} id={ id?.value } /> */}
       <div className='py-16'>
         {children}
       </div>

@@ -67,12 +67,12 @@ export default async function MonitoringManagement({ searchParams }) {
           <FormFilter />
         </div>
       </div>
-      <div className="flex-1 shadow-lg shadow-white-500/40 py-6 px-6 rounded mt-10">
-        <p className="font-bold text-3xl">Total Pendapatan Hari ini</p>
+      <div className="flex-1 border-gray-600 shadow-[0px_2px_30px_10px_rgba(0,0,0,0.05)] py-6 px-6 rounded mt-10" style={{borderRadius: '20px'}}>
+        <p className="font-bold text-3xl leading-10">Total Pendapatan Hari ini <b style={{color: 'white', background: 'rgb(109, 40, 217)', paddingInline: '16px', paddingBlock: '4px', borderRadius: '20px'}}>{filter}</b> </p>
         <p className="text-2xl mt-3">{new Date().toLocaleDateString("id",dateOptions)}</p>
         <p className="font-bold text-5xl mt-8">{formatNominal(todayData.totalbayar)}</p>
       </div>
-      <div className="shadow-lg shadow-white-500/40 py-6 px-6 rounded mt-10">
+      <div className="shadow-[0px_2px_30px_10px_rgba(0,0,0,0.05)] border-gray-600 py-6 px-6 rounded mt-10" style={{borderRadius: '20px'}}>
         <div>
           <div className="flex flex-col items-start gap-8 md:gap-0 md:flex-row md:items-center">
             <div className="flex-1">

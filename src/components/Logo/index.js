@@ -5,11 +5,12 @@ const poppins = Poppins({
   subsets: ['latin']
 })
 
-export default function Logo () {
+export default function Logo (props) {
+  console.log(props, 'PROPS')
   return (
-    <div className='px-9 py-3 bg-violet-700 w-fit'>
-      <p className={`${poppins.className} text-2xl text-white`}>
-        Billiard Indonesia.
+    <div className='px-9 py-3'>
+      <p className={`${poppins.className} text-2xl`}>
+        Billiard Indonesia
       </p>
     </div>
   )

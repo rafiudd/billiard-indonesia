@@ -44,34 +44,36 @@ export default function CreateUser() {
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <div className="mb-6">
-        <div className="flex flex-col gap-2 my-4">
-          <label htmlFor="email" className="text-violet-700">
-            Email
-          </label>
-          <Input
-            type="email"
-            name="email"
-            placeholder="Email"
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-2 my-4">
-          <label htmlFor="password" className="text-violet-700">
-            Password
-          </label>
-          <Input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-          />
-        </div>
+    <form onSubmit={onSubmit} className="flex-1 shadow-lg shadow-white-500/40 py-6 px-6 rounded mt-10">
+    <div className="mb-6">
+      <div className="mb-4">
+        <label htmlFor="email" className="text-violet-700 block text-sm font-medium">
+          Email
+        </label>
+        <Input
+          type="email"
+          name="email"
+          placeholder="Email"
+          required
+          className="mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:border-violet-500"
+        />
       </div>
-      <Button type="submit" disabled={isLoading}>
-        Login
-      </Button>
-    </form>
+      <div className="mb-4">
+        <label htmlFor="password" className="text-violet-700 block text-sm font-medium">
+          Password
+        </label>
+        <Input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+          className="mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:border-violet-500"
+        />
+      </div>
+    </div>
+    <Button style={{width: '100%'}} type="submit" disabled={isLoading}>
+      Login
+    </Button>
+  </form>
   )
 }

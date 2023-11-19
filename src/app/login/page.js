@@ -2,13 +2,13 @@ import Form from './form'
 
 export default async function FormCreateUser() {
   return (
-    <main className="container mx-auto py-[20vh]">
-      <div className="p-10 shadow-[0px_2px_30px_10px_rgba(0,0,0,0.03)] w-[767px] mx-auto">
-        <h1 className="text-5xl font-bold mb-8 mt-2 text-center">
-          Login
-        </h1>
-        <Form />
-      </div>
-    </main>
+  <main className="container mx-auto py-10 sm:py-20">
+    <div className="p-6 sm:p-10 shadow-lg w-full sm:w-[767px] mx-auto">
+      <h1 className="text-3xl sm:text-5xl font-bold mb-6 sm:mb-8 mt-2 text-center">
+        Login
+      </h1>
+      <Form />
+    </div>
+  </main>
   )
 }
