@@ -10,7 +10,7 @@ export default function FormFilter() {
     startDate: moment().subtract(8, 'days').format('YYYY-MM-DD'), 
     endDate: moment().format('YYYY-MM-DD')
   })
-  const [branch, setBranch] = useState("XT Billiard")
+  const [branch, setBranch] = useState("XT Billiard");
 
   const router = useRouter()
 
