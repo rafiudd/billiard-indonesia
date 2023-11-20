@@ -7,7 +7,8 @@ import {
   Tooltip,
   PointElement,
   LineElement,
-  BarElement
+  BarElement,
+  Legend
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
@@ -18,46 +19,46 @@ ChartJS.register(
   PointElement,
   LineElement,
   Tooltip,
-  BarElement
+  BarElement,
+  Legend
 );
 
-const BarChart = ({ data }) => {
-  let randomBackgroundColor = [];
-  let usedColors = new Set();
-
-  let dynamicColors = function() {
-      let r = Math.floor(Math.random() * 255);
-      let g = Math.floor(Math.random() * 255);
-      let b = Math.floor(Math.random() * 255);
-      let color = "rgb(" + r + "," + g + "," + b + ")";
-
-      if (!usedColors.has(color)) {
-          usedColors.add(color);
-          return color;
-      } else {
-          return dynamicColors();
-      }
+const BarChart = ({ data, pesanan }) => {
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Bar Chart',
+      },
+    },
   };
 
-  for (let i in data) {
-      randomBackgroundColor.push(dynamicColors());
-  }
-
   return (
-    <div class="w-full">
+    <div className="w-full">
       <Bar
         data={{
           labels: data.map((item) => moment(item.grouped_date).format('YYYY-MM-DD')),
           datasets: [
             {
+              label: 'Billiard',
               data: data.map((item) => item.totalbayar),
-              backgroundColor: randomBackgroundColor,
+              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            },
+            {
+              label: 'Cafe',
+              data: pesanan.map((item) => item.totalbayar),
+              backgroundColor: 'rgba(53, 162, 235, 0.5)',
             },
           ],
         }}
+        options={options}
       />
     </div>
   );
 };
-export default BarChart;
 
+export default BarChart;

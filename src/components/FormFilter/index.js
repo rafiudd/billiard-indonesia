@@ -7,8 +7,8 @@ import RangeDatePicker from "@/components/RangeDatePicker"
 
 export default function FormFilter() {
   const [date, setDate] = useState({
-    startDate:moment().subtract(7, 'days').format('YYYY-MM-DD'), 
-    endDate: new Date().toISOString().split('T')[0] 
+    startDate: moment().subtract(8, 'days').format('YYYY-MM-DD'), 
+    endDate: moment().format('YYYY-MM-DD')
   })
   const [branch, setBranch] = useState("XT Billiard")
 
