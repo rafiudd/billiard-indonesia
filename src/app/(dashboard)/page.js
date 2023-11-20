@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "moment-timezone";
 import prisma from "@/lib/prisma";
 import Pagination from "@/components/Pagination";
 import FormFilter from "@/components/FormFilter";
@@ -29,7 +29,7 @@ const formatNominal =  (nominal) => new Intl.NumberFormat("id", {
 }).format(nominal || 0);
 
 export default async function MonitoringManagement({ searchParams }) {
-  const { page = 1, filter = "XT Billiard", startDate = moment().subtract(7, 'days').format('YYYY-MM-DD'), endDate = moment().format('YYYY-MM-DD') } = searchParams;
+  const { page = 1, filter = "XT Billiard", startDate = moment.tz('Asia/Jakarta').subtract(7, 'days').format('YYYY-MM-DD'), endDate = moment.tz('Asia/Jakarta').format('YYYY-MM-DD') } = searchParams;
 
   const skip = (page - 1) * 10;
   const result =
@@ -68,7 +68,7 @@ export default async function MonitoringManagement({ searchParams }) {
     GROUP BY grouped_date
     ORDER BY grouped_date ASC`;
 
-  const today = moment().format('YYYY-MM-DD')
+  const today = moment.tz('Asia/Jakarta').format('YYYY-MM-DD')
 
   const todayData = await prisma.$queryRaw`
     SELECT SUM(totalbayar) as totalbayar
@@ -90,7 +90,7 @@ export default async function MonitoringManagement({ searchParams }) {
     <main className="container px-4 md:px-0 mx-auto">
       <div className="flex items-center">
         <div className="flex-1">
-          <p className="text-lg font-medium">Data terakhir diupdate: {lastUpdate[0]?.last_date_sync}</p>
+          <p className="text-lg font-medium">{today} terakhir diupdate: {lastUpdate[0]?.last_date_sync}</p>
         </div>
         <div className="flex-1">
           <FormFilter />

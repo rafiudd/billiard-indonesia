@@ -1,5 +1,5 @@
 "use client";
-import moment from "moment";
+import moment from "moment-timezone";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -41,7 +41,7 @@ const BarChart = ({ data, pesanan }) => {
     <div className="w-full">
       <Bar
         data={{
-          labels: data.map((item) => moment(item.grouped_date).format('YYYY-MM-DD')),
+          labels: data.map((item) => moment(item.grouped_date).tz('Asia/Jakarta').format('YYYY-MM-DD')),
           datasets: [
             {
               label: 'Billiard',
