@@ -121,37 +121,39 @@ export default async function MonitoringManagement({ searchParams }) {
               </div>
             </div>
           </div>
-          <table className="w-full text-left">
-            <thead className="bg-violet-700 text-white">
-              <tr>
-                <th className="px-4 py-3 text-left">Tanggal</th>
-                <th className="px-4 py-3 text-left">Total Penjualan Billiard</th>
-                <th className="px-4 py-3 text-left">Total Penjualan Cafe</th>
-                <th className="px-4 py-3 text-left">Total Penjualan</th>
-                <th className="px-4 py-3 text-left">Cabang</th>
-              </tr>
-            </thead>
-            <tbody>
-              {result.map((item, i) => {
-                const created_at = item?.grouped_date
-                  ? new Date(item?.grouped_date).toLocaleDateString(
-                      "id",
-                      dateOptions
-                    )
-                  : "-";
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead className="bg-violet-700 text-white">
+                <tr>
+                  <th className="px-4 py-3 text-left">Tanggal</th>
+                  <th className="px-4 py-3 text-left">Total Penjualan Billiard</th>
+                  <th className="px-4 py-3 text-left">Total Penjualan Cafe</th>
+                  <th className="px-4 py-3 text-left">Total Penjualan</th>
+                  <th className="px-4 py-3 text-left">Cabang</th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.map((item, i) => {
+                  const created_at = item?.grouped_date
+                    ? new Date(item?.grouped_date).toLocaleDateString(
+                        "id",
+                        dateOptions
+                      )
+                    : "-";
 
-                return (
-                  <tr key={item.id} className="border">
-                    <td className="px-4 py-3 text-left">{created_at}</td>
-                    <td className="px-4 py-3 text-left">{formatNominal(item?.totalbayar)}</td>
-                    <td className="px-4 py-3 text-left">{formatNominal(resultP[i]?.totalbayar)}</td>
-                    <td className="px-4 py-3 text-left">{formatNominal(parseInt(resultP[i]?.totalbayar) + parseInt(item?.totalbayar))}</td>
-                    <td className="px-4 py-3 text-left">{item.cabang_id}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                  return (
+                    <tr key={item.id} className="border">
+                      <td className="px-4 py-3 text-left">{created_at}</td>
+                      <td className="px-4 py-3 text-left">{formatNominal(item?.totalbayar)}</td>
+                      <td className="px-4 py-3 text-left">{formatNominal(resultP[i]?.totalbayar)}</td>
+                      <td className="px-4 py-3 text-left">{formatNominal(parseInt(resultP[i]?.totalbayar) + parseInt(item?.totalbayar))}</td>
+                      <td className="px-4 py-3 text-left">{item.cabang_id}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
           <div className="w-full flex justify-end py-4">
             <Pagination dataLength={result?.length} />
           </div>
