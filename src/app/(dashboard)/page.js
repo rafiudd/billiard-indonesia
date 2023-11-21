@@ -90,10 +90,10 @@ export default async function MonitoringManagement({ searchParams }) {
     <main className="container px-4 md:px-0 mx-auto">
       <div className="flex items-center">
         <div className="flex-1">
-          <FormFilter />
+          <p className="text-lg font-medium">Data terakhir diupdate: {lastUpdate[0]?.last_date_sync}</p>
         </div>
         <div className="flex-1">
-          <p className="text-lg font-medium">Data terakhir diupdate: {lastUpdate[0]?.last_date_sync}</p>
+          <FormFilter />
         </div>
       </div>
       <div className="flex-1 border-gray-600 shadow-[0px_2px_30px_10px_rgba(0,0,0,0.05)] py-6 px-6 rounded mt-10" style={{borderRadius: '20px'}}>
