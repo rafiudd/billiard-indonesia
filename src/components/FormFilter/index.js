@@ -20,7 +20,7 @@ export default function FormFilter() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col w-full md:w-unset md:items-center md:flex-row flex-1 gap-3">
+    <form className="flex flex-col w-full md:w-unset md:items-center md:flex-row flex-1 gap-3">
       <div className="basis-2/4">
         <RangeDatePicker value={date} onChange={(value) => setDate(value)} />
       </div>
@@ -28,7 +28,9 @@ export default function FormFilter() {
         <Filter value={branch} onChange={(e) => setBranch(e.target.value)} />
       </div>
       <div className="basis-1/4">
-        <input className="py-2.5 px-4 rounded-lg w-full bg-violet-700 text-white" onClick={onSubmit} type="submit" value="Filter"/>
+        <button className="py-2.5 px-4 rounded-lg w-full bg-violet-700 text-white" onClick={onSubmit}>
+          Filter
+        </button>
       </div>
     </form>
   )
