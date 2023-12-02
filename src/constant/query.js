@@ -56,14 +56,14 @@ export const orderPesanan = async (filter, startDate, endDate, skip) => {
   try {
     if(filter === 'All') {
       const result = await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
-        from order_biliard 
+        from pesanan 
         WHERE DATE(created_at) BETWEEN ${startDate} AND ${endDate}
         GROUP BY grouped_date, cabang_id
         ORDER BY grouped_date ASC, cabang_id`;
       return result
     }
     const result = await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
-      from order_biliard 
+      from pesanan 
       WHERE cabang_id = ${filter} 
       AND DATE(created_at) BETWEEN ${startDate} AND ${endDate}
       GROUP BY grouped_date
