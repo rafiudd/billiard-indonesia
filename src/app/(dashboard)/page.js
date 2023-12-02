@@ -30,7 +30,7 @@ const formatNominal =  (nominal) => new Intl.NumberFormat("id", {
 }).format(nominal || 0);
 
 export default async function MonitoringManagement({ searchParams }) {
-  const { page = 1, filter = "XT Billiard", startDate = moment.tz('Asia/Jakarta').subtract(7, 'days').format('YYYY-MM-DD'), endDate = moment.tz('Asia/Jakarta').format('YYYY-MM-DD') } = searchParams;
+  const { page = 1, filter = "All", startDate = moment.tz('Asia/Jakarta').subtract(7, 'days').format('YYYY-MM-DD'), endDate = moment.tz('Asia/Jakarta').format('YYYY-MM-DD') } = searchParams;
 
   const skip = (page - 1) * 10;
 

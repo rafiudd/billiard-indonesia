@@ -99,32 +99,49 @@ export const chartOrderPesanan = async (filter, startDate, endDate) => {
 }
 
 export const orderToday = async (filter, today) => {
+  console.log(filter, 'FILTER');
   try {
+    if (filter === 'All') {
+      const result = await prisma.$queryRaw`
+        SELECT SUM(totalbayar) as totalbayar
+        FROM order_biliard
+        WHERE DATE(created_at) = ${today}`;
+      return result;
+    }
     const result = await prisma.$queryRaw`
-    SELECT SUM(totalbayar) as totalbayar
-    FROM order_biliard
-    WHERE (${filter} = 'All' OR cabang_id = ${filter})
-    AND DATE(created_at) = ${today}`
-  return result
+      SELECT SUM(totalbayar) as totalbayar
+      FROM order_biliard
+      WHERE cabang_id = ${filter} AND DATE(created_at) = ${today}`;
+    return result;
   } catch (error) {
     console.log(error);
     return [];
   }
-}
+};
+
 
 export const orderPesananToday = async (filter, today) => {
   try {
+    if (filter === 'All') {
+      const result = await prisma.$queryRaw`
+        SELECT SUM(totalbayar) as totalbayar
+        FROM pesanan
+        WHERE DATE(created_at) = ${today}`;
+      return result;
+    }
+
     const result = await prisma.$queryRaw`
-    SELECT SUM(totalbayar) as totalbayar
-    FROM pesanan
-    WHERE (${filter} = 'All' OR cabang_id = ${filter})
-    AND DATE(created_at) = ${today}`;
-  return result
+      SELECT SUM(totalbayar) as totalbayar
+      FROM pesanan
+      WHERE cabang_id = ${filter}
+      AND DATE(created_at) = ${today}`;
+      
+    return result;
   } catch (error) {
     console.log(error);
     return [];
   }
-}
+};
 
 export const lastSyncData = async() => {
   try {
