@@ -16,7 +16,9 @@ export default function FormFilter() {
 
   const onSubmit = (event) => {
     event.preventDefault()
-    router.push(`/?filter=${branch}&startDate=${date.startDate}&endDate=${date.endDate}`)
+    router.push(`/?filter=${branch}
+    &startDate=${moment(date.startDate).startOf('day').add(10, 'hours').format()}
+    &endDate=${moment(date.endDate).startOf('day').add(1, 'day').add(4, 'hours').format()}`)
   }
 
   return (
