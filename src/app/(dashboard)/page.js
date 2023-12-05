@@ -44,9 +44,9 @@ export default async function MonitoringManagement({ searchParams }) {
 
   const today = moment.tz('Asia/Jakarta').format('YYYY-MM-DD')
 
-  const todayData = await orderToday(filter, today);
+  const todayData = await orderToday(filter, moment(today).startOf('day').add(7, 'hours').format('YYYY-MM-DD HH:mm:ss'), moment(today).startOf('day').add(1, 'day').add(9, 'hours').format('YYYY-MM-DD HH:mm:ss'));
 
-  const todayDataPesanan = await orderPesananToday(filter, today);
+  const todayDataPesanan = await orderPesananToday(filter, moment(today).startOf('day').add(7, 'hours').format('YYYY-MM-DD HH:mm:ss'), moment(today).startOf('day').add(1, 'day').add(9, 'hours').format('YYYY-MM-DD HH:mm:ss'));
   
   const lastUpdate = await lastSyncData();
 
