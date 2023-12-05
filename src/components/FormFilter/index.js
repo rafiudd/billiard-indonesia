@@ -30,7 +30,7 @@ export default function FormFilter() {
       </div>
       <div className="basis-1/4">
         <button className="py-2.5 px-4 rounded-lg w-full bg-violet-700 text-white" onClick={onSubmit}>
-        <p>{branch}</p>
+        Filter
         </button>
       </div>
     </form>
