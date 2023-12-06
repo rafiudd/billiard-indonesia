@@ -42,13 +42,25 @@ export default async function MonitoringManagement({ searchParams }) {
   
   const resultChartP = await chartOrderPesanan(filter, startDate, endDate);
 
-  const today = moment.tz('Asia/Jakarta').format('YYYY-MM-DD')
+  const today = moment.tz('Asia/Jakarta');
+  const startedDate = moment(today).startOf('day').add(9, 'hours').format('YYYY-MM-DD HH:mm:ss');
+  const endedDate = moment(today).startOf('day').add(1, 'day').add(7, 'hours').format('YYYY-MM-DD HH:mm:ss');
 
-  const todayData = await orderToday(filter, moment(today).startOf('day').add(7, 'hours').format('YYYY-MM-DD HH:mm:ss'), moment(today).startOf('day').add(1, 'day').add(9, 'hours').format('YYYY-MM-DD HH:mm:ss'));
+  const todayData = await orderToday(filter, startedDate, endedDate);
 
-  const todayDataPesanan = await orderPesananToday(filter, moment(today).startOf('day').add(7, 'hours').format('YYYY-MM-DD HH:mm:ss'), moment(today).startOf('day').add(1, 'day').add(9, 'hours').format('YYYY-MM-DD HH:mm:ss'));
+  const todayDataPesanan = await orderPesananToday(filter, startedDate, endedDate);
   
   const lastUpdate = await lastSyncData();
+
+  let totalMoneyToday = 0;
+  if(new Date(result[0].grouped_date).toLocaleDateString() == new Date().toLocaleDateString()) {
+    if(filter == 'All') {
+      totalMoneyToday = parseInt(resultP[0].totalbayar) + parseInt(result[0].totalbayar);
+      totalMoneyToday = parseInt(resultP[1].totalbayar) + parseInt(result[1].totalbayar);
+    }
+  
+    totalMoneyToday = parseInt(resultP[0].totalbayar) + parseInt(result[0].totalbayar);
+  }
 
   return (
     <main className="container px-4 md:px-0 mx-auto">
@@ -63,7 +75,7 @@ export default async function MonitoringManagement({ searchParams }) {
       <div className="flex-1 border-gray-600 shadow-[0px_2px_30px_10px_rgba(0,0,0,0.05)] py-6 px-6 rounded mt-10" style={{borderRadius: '20px'}}>
         <p className="font-bold text-3xl leading-10">Total Pendapatan Hari ini <b style={{color: 'white', background: 'rgb(109, 40, 217)', paddingInline: '16px', paddingBlock: '4px', borderRadius: '20px'}}>{filter}</b> </p>
         <p className="text-2xl mt-3">{new Date().toLocaleDateString("id",dateOptions)}</p>
-        <p className="font-bold text-5xl mt-8">{formatNominal(parseInt(todayData[0]?.totalbayar) + parseInt(todayDataPesanan[0]?.totalbayar))}</p>
+        <p className="font-bold text-5xl mt-8">{formatNominal(totalMoneyToday)}</p>
       </div>
       <div className="shadow-[0px_2px_30px_10px_rgba(0,0,0,0.05)] border-gray-600 py-6 px-6 rounded mt-10" style={{borderRadius: '20px'}}>
         <div>
