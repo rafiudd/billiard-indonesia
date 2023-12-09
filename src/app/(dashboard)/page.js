@@ -50,23 +50,25 @@ export default async function MonitoringManagement({ searchParams }) {
 
   const todayDataPesanan = await orderPesananToday(filter, startedDate, endedDate);
   
-  const lastUpdate = await lastSyncData();
+  const lastUpdate = await lastSyncData('Jogja Billiard');
+  const lastUpdateX = await lastSyncData('XT Billiard');
 
   let totalMoneyToday = 0;
-  if(new Date(result[0].grouped_date).toLocaleDateString() == new Date().toLocaleDateString()) {
+  if(new Date(result[0]?.grouped_date).toLocaleDateString() == new Date().toLocaleDateString()) {
     if(filter == 'All') {
-      totalMoneyToday = parseInt(resultP[0].totalbayar) + parseInt(result[0].totalbayar);
-      totalMoneyToday = parseInt(resultP[1].totalbayar) + parseInt(result[1].totalbayar);
+      totalMoneyToday = parseInt(resultP[0]?.totalbayar) + parseInt(result[0]?.totalbayar);
+      totalMoneyToday = parseInt(resultP[1]?.totalbayar) + parseInt(result[1]?.totalbayar);
     }
   
-    totalMoneyToday = parseInt(resultP[0].totalbayar) + parseInt(result[0].totalbayar);
+    totalMoneyToday = parseInt(resultP[0]?.totalbayar) + parseInt(result[0]?.totalbayar);
   }
 
   return (
     <main className="container px-4 md:px-0 mx-auto">
       <div className="flex items-center">
         <div className="flex-1">
-          <p className="text-lg font-medium">Data terakhir diupdate: {lastUpdate[0]?.last_date_sync}</p>
+          <p className="text-lg font-medium">Data terakhir diupdate JB: {lastUpdate[0]?.last_date_sync}</p>
+          <p className="text-lg font-medium">Data terakhir diupdate XT: {lastUpdateX[0]?.last_date_sync}</p>
         </div>
         <div className="flex-1">
           <FormFilter />

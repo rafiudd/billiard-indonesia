@@ -164,11 +164,11 @@ export const orderPesananToday = async (filter, startDate, endDate) => {
   }
 };
 
-export const lastSyncData = async() => {
+export const lastSyncData = async(cabang_id) => {
   try {
     const result = await prisma.$queryRaw`
     SELECT MAX(last_date_sync) as last_date_sync
-    FROM cron_history`
+    FROM cron_history WHERE cabang_id = ${cabang_id}`
   return result
   } catch (error) {
     console.log(error);
