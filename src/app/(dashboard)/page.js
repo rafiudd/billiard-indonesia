@@ -79,62 +79,64 @@ export default async function MonitoringManagement({ searchParams }) {
         <p className="text-2xl mt-3">{new Date().toLocaleDateString("id",dateOptions)}</p>
         <p className="font-bold text-5xl mt-8">{formatNominal(totalMoneyToday)}</p>
       </div>
+      {filter != 'All' &&
       <div className="shadow-[0px_2px_30px_10px_rgba(0,0,0,0.05)] border-gray-600 py-6 px-6 rounded mt-10" style={{borderRadius: '20px'}}>
-        <div>
-          <div className="flex flex-col items-start gap-8 md:gap-0 md:flex-row md:items-center">
-            <div className="flex-1">
-              <p className="font-bold text-3xl">Grafik Pendapatan Harian</p>
-            </div>
-          </div>
-          <div className="mt-10">
-            <BarChart data={resultChart} pesanan={resultChartP} />
+      <div>
+        <div className="flex flex-col items-start gap-8 md:gap-0 md:flex-row md:items-center">
+          <div className="flex-1">
+            <p className="font-bold text-3xl">Grafik Pendapatan Harian</p>
           </div>
         </div>
+        <div className="mt-10">
+          <BarChart data={resultChart} pesanan={resultChartP} />
+        </div>
+      </div>
+    </div>}
 
-        <div>
-          <div className="pt-10 mb-4">
-            <div className="flex flex-col items-start gap-8 md:gap-0 md:flex-row md:items-center">
-              <div className="flex-1">
-                <p className="font-bold text-3xl">Tabel Pendapatan Harian</p>
-              </div>
+
+    <div>
+        <div className="pt-10 mb-4">
+          <div className="flex flex-col items-start gap-8 md:gap-0 md:flex-row md:items-center">
+            <div className="flex-1">
+              <p className="font-bold text-3xl">Tabel Pendapatan Harian</p>
             </div>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-violet-700 text-white">
-                <tr>
-                  <th className="px-4 py-3 text-left">Tanggal</th>
-                  <th className="px-4 py-3 text-left">Total Penjualan Billiard</th>
-                  <th className="px-4 py-3 text-left">Total Penjualan Cafe</th>
-                  <th className="px-4 py-3 text-left">Total Penjualan</th>
-                  <th className="px-4 py-3 text-left">Cabang</th>
-                </tr>
-              </thead>
-              <tbody>
-                {result.map((item, i) => {
-                  const created_at = item?.grouped_date
-                    ? new Date(item?.grouped_date).toLocaleDateString(
-                        "id",
-                        dateOptions
-                      )
-                    : "-";
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead className="bg-violet-700 text-white">
+              <tr>
+                <th className="px-4 py-3 text-left">Tanggal</th>
+                <th className="px-4 py-3 text-left">Total Penjualan Billiard</th>
+                <th className="px-4 py-3 text-left">Total Penjualan Cafe</th>
+                <th className="px-4 py-3 text-left">Total Penjualan</th>
+                <th className="px-4 py-3 text-left">Cabang</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, i) => {
+                const created_at = item?.grouped_date
+                  ? new Date(item?.grouped_date).toLocaleDateString(
+                      "id",
+                      dateOptions
+                    )
+                  : "-";
 
-                  return (
-                    <tr key={item.id} className="border">
-                      <td className="px-4 py-3 text-left">{created_at}</td>
-                      <td className="px-4 py-3 text-left">{formatNominal(item?.totalbayar)}</td>
-                      <td className="px-4 py-3 text-left">{formatNominal(resultP[i]?.totalbayar)}</td>
-                      <td className="px-4 py-3 text-left">{formatNominal(parseInt(resultP[i]?.totalbayar) + parseInt(item?.totalbayar))}</td>
-                      <td className="px-4 py-3 text-left">{item.cabang_id}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <div className="w-full flex justify-end py-4">
-            <Pagination dataLength={result?.length} />
-          </div>
+                return (
+                  <tr key={item.id} className="border">
+                    <td className="px-4 py-3 text-left">{created_at}</td>
+                    <td className="px-4 py-3 text-left">{formatNominal(item?.totalbayar)}</td>
+                    <td className="px-4 py-3 text-left">{formatNominal(resultP[i]?.totalbayar)}</td>
+                    <td className="px-4 py-3 text-left">{formatNominal(parseInt(resultP[i]?.totalbayar) + parseInt(item?.totalbayar))}</td>
+                    <td className="px-4 py-3 text-left">{item.cabang_id}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className="w-full flex justify-end py-4">
+          <Pagination dataLength={result?.length} />
         </div>
       </div>
     </main>
