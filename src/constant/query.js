@@ -31,6 +31,7 @@ export const orderBiliard = async (filter, startDate, endDate, skip) => {
           Select (created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
           from order_biliard 
           WHERE (created_at) BETWEEN ${start} AND ${end}
+          GROUP BY cabang_id
           ORDER BY grouped_date DESC
           LIMIT 10
           OFFSET ${skip}
@@ -50,6 +51,7 @@ export const orderBiliard = async (filter, startDate, endDate, skip) => {
           from order_biliard 
           WHERE cabang_id = ${filter} 
           AND (created_at) BETWEEN ${start} AND ${end}
+          GROUP BY cabang_id
           ORDER BY grouped_date DESC
         `;
 
@@ -79,6 +81,7 @@ export const chartOrderBiliard = async (filter, startDate, endDate) => {
           Select (created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
           from order_biliard 
           WHERE (created_at) BETWEEN ${start} AND ${end}
+          GROUP BY cabang_id
           ORDER BY grouped_date DESC
         `;
 
@@ -95,6 +98,7 @@ export const chartOrderBiliard = async (filter, startDate, endDate) => {
         from order_biliard 
         WHERE cabang_id = ${filter} 
         AND (created_at) BETWEEN ${start} AND ${end}
+        GROUP BY cabang_id
         ORDER BY grouped_date DESC
       `;
 
@@ -122,6 +126,7 @@ export const orderPesanan = async (filter, startDate, endDate, skip) => {
           Select (created_at) as grouped_date, SUM(TotalBayar) as totalbayar, MAX(cabang_id) as cabang_id  
           from pesanan 
           WHERE (created_at) BETWEEN ${start} AND ${end}
+          GROUP BY cabang_id
           ORDER BY grouped_date DESC
           LIMIT 10
           OFFSET ${skip}
@@ -138,6 +143,7 @@ export const orderPesanan = async (filter, startDate, endDate, skip) => {
           from pesanan 
           WHERE cabang_id = ${filter} 
           AND (created_at) BETWEEN ${start} AND ${end}
+          GROUP BY cabang_id
           ORDER BY grouped_date DESC
         `;
   
@@ -166,6 +172,7 @@ export const chartOrderPesanan = async (filter, startDate, endDate) => {
           Select (created_at) as grouped_date, SUM(TotalBayar) as totalbayar, MAX(cabang_id) as cabang_id  
           from pesanan 
           WHERE (created_at) BETWEEN ${start} AND ${end}
+          GROUP BY cabang_id
           ORDER BY grouped_date DESC
         `;
   
@@ -183,6 +190,7 @@ export const chartOrderPesanan = async (filter, startDate, endDate) => {
         from pesanan 
         WHERE cabang_id = ${filter} 
         AND (created_at) BETWEEN ${start} AND ${end}
+        GROUP BY cabang_id
         ORDER BY grouped_date DESC
       `;
 
