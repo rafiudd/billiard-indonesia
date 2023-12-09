@@ -1,62 +1,106 @@
 import prisma from "@/lib/prisma";
+import moment from "moment";
+
+const calculateDateRange = (startDate, endDate) => {
+  const dateRange = [];
+  let currentDate = moment(startDate);
+
+  while (currentDate.isSameOrBefore(endDate)) {
+    dateRange.push({
+      start: currentDate.format('YYYY-MM-DD 09:00:00'),
+      end: currentDate.add(1, 'day').format('YYYY-MM-DD 07:00:00'),
+    });
+  }
+
+  return dateRange;
+};
 
 export const orderBiliard = async (filter, startDate, endDate, skip) => {
   console.log(startDate, endDate, 'ORDERR');
   try {
-    if(filter === 'All'){
-      const result =  await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id
-      from order_biliard 
-      WHERE DATE(created_at) BETWEEN ${startDate} AND ${endDate}
-      GROUP BY grouped_date, cabang_id
-      ORDER BY grouped_date DESC, cabang_id
-      LIMIT 10
-      OFFSET ${skip}
-      `;
-      return result
-    }
-    const result = await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
-    from order_biliard 
-    WHERE cabang_id = ${filter} 
-    AND DATE(created_at) BETWEEN ${startDate} AND ${endDate}
-    GROUP BY grouped_date
-    ORDER BY grouped_date DESC
-    LIMIT 10
-    OFFSET ${skip}
-    `;
+    let result = [];
 
-    console.log(`Select DATE(created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
-    from order_biliard 
-    WHERE cabang_id = ${filter} 
-    AND DATE(created_at) BETWEEN ${startDate} AND ${endDate}
-    GROUP BY grouped_date
-    ORDER BY grouped_date DESC
-    LIMIT 10
-    OFFSET ${skip}
-    `)
-    return result
+    if (filter === 'All') {
+      const dateRange = calculateDateRange(startDate, endDate);
+
+      for (const range of dateRange) {
+        const { start, end } = range;
+
+
+        const dailyResult = await prisma.$queryRaw`
+          Select (created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
+          from order_biliard 
+          WHERE (created_at) BETWEEN ${start} AND ${end}
+          ORDER BY grouped_date DESC
+          LIMIT 10
+          OFFSET ${skip}
+        `;
+
+        result.push(...dailyResult);
+      }
+    } else {
+      const dateRange = calculateDateRange(startDate, endDate);
+
+      for (const range of dateRange) {
+        const { start, end } = range;
+
+
+        const dailyResult = await prisma.$queryRaw`
+          Select (created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
+          from order_biliard 
+          WHERE cabang_id = ${filter} 
+          AND (created_at) BETWEEN ${start} AND ${end}
+          ORDER BY grouped_date DESC
+        `;
+
+        result.push(...dailyResult);
+      }
+    }
+
+    console.log(result);
+    return result.reverse();
   } catch (error) {
     console.log(error);
     return [];
   }
-}
+};
 
 export const chartOrderBiliard = async (filter, startDate, endDate) => {
   try {
+    let result = [];
     if(filter === 'All'){
-      const result = await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
-        from order_biliard 
-        WHERE DATE(created_at) BETWEEN ${startDate} AND ${endDate}
-        GROUP BY grouped_date, cabang_id
-        ORDER BY grouped_date ASC, cabang_id`;
-      return result 
+      const dateRange = calculateDateRange(startDate, endDate);
+
+      for (const range of dateRange) {
+        const { start, end } = range;
+
+
+        const dailyResult = await prisma.$queryRaw`
+          Select (created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
+          from order_biliard 
+          WHERE (created_at) BETWEEN ${start} AND ${end}
+          ORDER BY grouped_date DESC
+        `;
+
+        result.push(...dailyResult);
+      }
     }
-    const result = await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(totalbayar) as totalbayar, MAX(cabang_id) as cabang_id  
-      from order_biliard 
-      WHERE cabang_id = ${filter} 
-      AND DATE(created_at) BETWEEN ${startDate} AND ${endDate}
-      GROUP BY grouped_date
-      ORDER BY grouped_date ASC`;
-    return result
+    const dateRange = calculateDateRange(startDate, endDate);
+
+    for (const range of dateRange) {
+      const { start, end } = range;
+
+      const dailyResult = await prisma.$queryRaw`
+        Select (created_at) as grouped_date, SUM(TotalBayar) as totalbayar, MAX(cabang_id) as cabang_id  
+        from order_biliard 
+        WHERE cabang_id = ${filter} 
+        AND (created_at) BETWEEN ${start} AND ${end}
+        ORDER BY grouped_date DESC
+      `;
+
+      result.push(...dailyResult);
+    }
+    return result;
   } catch (error) {
     console.log(error);
     return [];
@@ -65,27 +109,43 @@ export const chartOrderBiliard = async (filter, startDate, endDate) => {
 
 export const orderPesanan = async (filter, startDate, endDate, skip) => {
   try {
-    if(filter === 'All'){
-      const result =  await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(TotalBayar) as totalbayar, MAX(cabang_id) as cabang_id
-      from pesanan 
-      WHERE DATE(created_at) BETWEEN ${startDate} AND ${endDate}
-      GROUP BY grouped_date, cabang_id
-      ORDER BY grouped_date DESC, cabang_id
-      LIMIT 10
-      OFFSET ${skip}
-      `;
-      return result
+    const dateRange = calculateDateRange(startDate, endDate);
+    let result = [];
+    if (filter === 'All') {
+      const dateRange = calculateDateRange(startDate, endDate);
+
+      for (const range of dateRange) {
+        const { start, end } = range;
+
+
+        const dailyResult = await prisma.$queryRaw`
+          Select (created_at) as grouped_date, SUM(TotalBayar) as totalbayar, MAX(cabang_id) as cabang_id  
+          from pesanan 
+          WHERE (created_at) BETWEEN ${start} AND ${end}
+          ORDER BY grouped_date DESC
+          LIMIT 10
+          OFFSET ${skip}
+        `;
+
+        result.push(...dailyResult);
+      }
+    } else {
+      for (const range of dateRange) {
+        const { start, end } = range;
+  
+        const dailyResult = await prisma.$queryRaw`
+          Select (created_at) as grouped_date, SUM(TotalBayar) as totalbayar, MAX(cabang_id) as cabang_id  
+          from pesanan 
+          WHERE cabang_id = ${filter} 
+          AND (created_at) BETWEEN ${start} AND ${end}
+          ORDER BY grouped_date DESC
+        `;
+  
+        result.push(...dailyResult);
+      }
     }
-    const result = await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(TotalBayar) as totalbayar, MAX(cabang_id) as cabang_id  
-    from pesanan 
-    WHERE cabang_id = ${filter} 
-    AND DATE(created_at) BETWEEN ${startDate} AND ${endDate}
-    GROUP BY grouped_date
-    ORDER BY grouped_date DESC
-    LIMIT 10
-    OFFSET ${skip}
-    `;
-    return result
+
+    return result.reverse();
   } catch (error) {
     console.log(error);
     return [];
@@ -94,20 +154,40 @@ export const orderPesanan = async (filter, startDate, endDate, skip) => {
 
 export const chartOrderPesanan = async (filter, startDate, endDate) => {
   try {
+    const dateRange = calculateDateRange(startDate, endDate);
+
+    let result = [];
     if(filter === 'All') {
-      const result = await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(TotalBayar) as totalbayar, MAX(cabang_id) as cabang_id  
-        from pesanan 
-        WHERE DATE(created_at) BETWEEN ${startDate} AND ${endDate}
-        GROUP BY grouped_date, cabang_id
-        ORDER BY grouped_date ASC, cabang_id`;
-      return result
+      for (const range of dateRange) {
+        const { start, end } = range;
+
+  
+        const dailyResult = await prisma.$queryRaw`
+          Select (created_at) as grouped_date, SUM(TotalBayar) as totalbayar, MAX(cabang_id) as cabang_id  
+          from pesanan 
+          WHERE (created_at) BETWEEN ${start} AND ${end}
+          ORDER BY grouped_date DESC
+        `;
+  
+        result.push(...dailyResult);
+      }
+
+      return result;
     }
-    const result = await prisma.$queryRaw`Select DATE(created_at) as grouped_date, SUM(TotalBayar) as totalbayar, MAX(cabang_id) as cabang_id  
-      from pesanan 
-      WHERE cabang_id = ${filter} 
-      AND DATE(created_at) BETWEEN ${startDate} AND ${endDate}
-      GROUP BY grouped_date
-      ORDER BY grouped_date ASC`;
+
+    for (const range of dateRange) {
+      const { start, end } = range;
+
+      const dailyResult = await prisma.$queryRaw`
+        Select (created_at) as grouped_date, SUM(TotalBayar) as totalbayar, MAX(cabang_id) as cabang_id  
+        from pesanan 
+        WHERE cabang_id = ${filter} 
+        AND (created_at) BETWEEN ${start} AND ${end}
+        ORDER BY grouped_date DESC
+      `;
+
+      result.push(...dailyResult);
+    }
     return result
   } catch (error) {
     console.log(error);
@@ -116,7 +196,6 @@ export const chartOrderPesanan = async (filter, startDate, endDate) => {
 }
 
 export const orderToday = async (filter, startDate, endDate) => {
-  console.log(filter, startDate, endDate, 'FILTER');
   try {
     if (filter === 'All') {
       const result = await prisma.$queryRaw`
@@ -129,10 +208,6 @@ export const orderToday = async (filter, startDate, endDate) => {
       SELECT SUM(totalbayar) as totalbayar
       FROM order_biliard
       WHERE cabang_id = ${filter} AND (created_at) BETWEEN ${startDate} AND ${endDate}`;
-      console.log(`
-      SELECT SUM(totalbayar) as totalbayar
-      FROM order_biliard
-      WHERE cabang_id = ${filter} AND DATE(created_at) BETWEEN ${startDate} AND ${endDate}`)
     return result;
   } catch (error) {
     console.log(error);
