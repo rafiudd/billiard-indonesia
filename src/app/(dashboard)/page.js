@@ -110,7 +110,8 @@ export default async function MonitoringManagement({ searchParams }) {
                 <th className="px-4 py-3 text-left">Total Penjualan Billiard</th>
                 <th className="px-4 py-3 text-left">Total Penjualan Cafe</th>
                 <th className="px-4 py-3 text-left">Total Penjualan</th>
-                <th className="px-4 py-3 text-left">Cabang</th>
+                {filter != 'All' &&
+                <th className="px-4 py-3 text-left">Cabang</th>}
               </tr>
             </thead>
             <tbody>
@@ -128,7 +129,7 @@ export default async function MonitoringManagement({ searchParams }) {
                     <td className="px-4 py-3 text-left">{formatNominal(item?.totalbayar)}</td>
                     <td className="px-4 py-3 text-left">{formatNominal(resultP[i]?.totalbayar)}</td>
                     <td className="px-4 py-3 text-left">{formatNominal(parseInt(resultP[i]?.totalbayar) + parseInt(item?.totalbayar))}</td>
-                    <td className="px-4 py-3 text-left">{item.cabang_id}</td>
+                    {filter != 'All' && <td className="px-4 py-3 text-left">{item.cabang_id}</td>}
                   </tr>
                 );
               })}
