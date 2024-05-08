@@ -15,6 +15,7 @@ export default function Filter({ filter, onChange }) {
       <option value="All">All</option>
       <option value="XT Billiard">XT Billiard</option>
       <option value="Jogja Billiard">Jogja Billiard</option>
+      <option value="Jakal Billiard">Jakal Billiard</option>
     </select>
   );
 }

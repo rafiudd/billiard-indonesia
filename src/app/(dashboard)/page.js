@@ -52,6 +52,7 @@ export default async function MonitoringManagement({ searchParams }) {
   
   const lastUpdate = await lastSyncData('Jogja Billiard');
   const lastUpdateX = await lastSyncData('XT Billiard');
+  const lastUpdateJ = await lastSyncData('Jakal Billiard');
 
   let totalMoneyToday = 0;
   if(new Date(result[0]?.grouped_date).toLocaleDateString() == new Date().toLocaleDateString()) {
@@ -69,6 +70,7 @@ export default async function MonitoringManagement({ searchParams }) {
         <div className="flex-1">
           <p className="text-lg font-medium">Data terakhir diupdate JB: {lastUpdate[0]?.last_date_sync}</p>
           <p className="text-lg font-medium">Data terakhir diupdate XT: {lastUpdateX[0]?.last_date_sync}</p>
+          <p className="text-lg font-medium">Data terakhir diupdate Jakal: {lastUpdateJ[0]?.last_date_sync}</p>
         </div>
         <div className="flex-1">
           <FormFilter />
