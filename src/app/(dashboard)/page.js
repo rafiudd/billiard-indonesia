@@ -81,19 +81,7 @@ export default async function MonitoringManagement({ searchParams }) {
         <p className="text-2xl mt-3">{new Date().toLocaleDateString("id",dateOptions)}</p>
         <p className="font-bold text-5xl mt-8">{formatNominal(totalMoneyToday)}</p>
       </div>
-      {filter != 'All' &&
-      <div className="shadow-[0px_2px_30px_10px_rgba(0,0,0,0.05)] border-gray-600 py-6 px-6 rounded mt-10" style={{borderRadius: '20px'}}>
-      <div>
-        <div className="flex flex-col items-start gap-8 md:gap-0 md:flex-row md:items-center">
-          <div className="flex-1">
-            <p className="font-bold text-3xl">Grafik Pendapatan Harian</p>
-          </div>
-        </div>
-        <div className="mt-10">
-          <BarChart data={resultChart} pesanan={resultChartP} />
-        </div>
-      </div>
-    </div>}
+    
 
 
     <div>
@@ -142,6 +130,19 @@ export default async function MonitoringManagement({ searchParams }) {
           <Pagination dataLength={result?.length} />
         </div>
       </div>
+      {filter != 'All' &&
+      <div className="shadow-[0px_2px_30px_10px_rgba(0,0,0,0.05)] border-gray-600 py-6 px-6 rounded mt-10" style={{borderRadius: '20px'}}>
+      <div>
+        <div className="flex flex-col items-start gap-8 md:gap-0 md:flex-row md:items-center">
+          <div className="flex-1">
+            <p className="font-bold text-3xl">Grafik Pendapatan Harian</p>
+          </div>
+        </div>
+        <div className="mt-10">
+          <BarChart data={resultChart} pesanan={resultChartP} />
+        </div>
+      </div>
+    </div>}
     </main>
   );
 }
